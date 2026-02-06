@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import Navigation from './components/Navigation';
+import { galleries, getCloudinaryUrl } from '@/data/galleries';
 
 export default function Home() {
   return (
@@ -28,25 +30,28 @@ export default function Home() {
               Galleries
             </h2>
 
-            {/* Placeholder for galleries */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
+              {galleries.map((gallery) => (
+                <Link
+                  key={gallery.id}
+                  href={`/gallery/${gallery.id}`}
                   className="group cursor-pointer"
                 >
                   <div className="aspect-[4/3] bg-zinc-100 dark:bg-zinc-900 rounded-lg mb-4 overflow-hidden">
-                    <div className="w-full h-full flex items-center justify-center text-zinc-400 dark:text-zinc-600">
-                      <span className="text-sm">Gallery {i}</span>
-                    </div>
+                    <img
+                      src={getCloudinaryUrl(gallery.coverImage, { width: 800, height: 600 })}
+                      alt={gallery.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
                   </div>
                   <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-400 transition-colors">
-                    Gallery Title
+                    {gallery.title}
                   </h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-500 mt-1">
-                    Location, 2025
+                  <p className="text-sm text-zinc-500 mt-1">
+                    {gallery.location}, {gallery.year}
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
